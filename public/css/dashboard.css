@@ -1,0 +1,84 @@
+.cabeca{
+    background-color: #27ce86;
+    text-align: center;
+    padding: 5px;
+}
+
+.cabeca span{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#definirCliente{
+    font-weight: bold;
+    color: #27ce86;
+}
+
+#caixaPesquisa{
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: white;
+}
+
+#caixaPesquisa input{
+    width: 80%;
+    border: none;
+}
+
+#caixaPesquisa span{
+    color: #27ce86;
+    font-weight: bold;
+}
+
+#caixaPesquisa input:focus{
+    box-shadow: 0 0 0 0;
+    border: 0 none;
+    outline: 0;
+}
+
+#imagemPesquisa{
+    float: right;
+}
+
+#imagemPesquisa img{
+    width: 30px;
+}
+
+#caixaQuantidade{
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: white;
+}
+
+.valorCaixa {
+    color: black;
+    font-weight: bold;
+    float: right;
+}
+
+#caixaValorTotalCompra{
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: white;
+}
+
+.textoCaixa{
+    color: #27ce86;
+    font-weight: bold;
+}
+
+.cupomFiscal{
+    background-color: white;
+    width: 100%;
+    margin-top: 20px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.cupomFiscal span{
+    font-weight: bold;
+    font-size: 25px;
+}
