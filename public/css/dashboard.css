@@ -76,9 +76,35 @@
     margin-top: 20px;
     margin-right: 10px;
     text-align: center;
+    padding: 0;
 }
 
 .cupomFiscal span{
     font-weight: bold;
     font-size: 25px;
+}
+
+.tabelaProdutos{
+    width: 100%;
+    background-color: #d7d7d7;
+    color: #8f9299;
+    margin-bottom: 5px;
+}
+
+.nomeProduto{
+    font-weight: bold;
+    color: black;
+}
+
+#conteudoCupom{
+
+}
+
+#caixaFinalizarVenda{
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #27ce86;
+    color: white;
+    font-weight: bold;
 }

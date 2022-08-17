@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Produtos;
+use App\Models\Pedidos_Caixa;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,6 +26,6 @@ Route::get('/dashboard', [Dashboard::class, 'index']);
 
 Route::post('/consulta/produto', [Produtos::class, 'consultaProduto'])->name('consulta.produto');
 
-Route::view('listagemProdutosCaixa', 'listagemProdutos', [
-    'data' => \App\Models\Pedidos_Caixa::all()->where('ip', $_SERVER[""])->get()
+Route::view('listagemProdutosCaixa', 'listagemProdutosCaixa', [
+    'data' => DB::table('pedidos_caixa')->where('ip', request()->ip())->orderBy('id', 'desc')->get()
 ]);

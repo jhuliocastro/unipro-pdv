@@ -42,9 +42,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col">
+                        <div id="caixaFinalizarVenda">
+                            Finalizar venda (F4)
+                            R$ 0,00
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col cupomFiscal">
                 <span>CUPOM FISCAL</span>
+                <hr>
+                <div id="conteudoCupom"></div>
             </div>
         </div>
     </div>
@@ -57,6 +67,7 @@
         let quantidade = 1;
         $(document).ready(function(){
             $("#codigoProduto").focus();
+            $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
 
             $("#codigoProduto").keyup(function(e){
                 if(e.which == 13){
@@ -74,6 +85,7 @@
                         dataType: 'json',
                         success: function(response){
                             console.log(response);
+                            $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
                         }
                     });
                 }
