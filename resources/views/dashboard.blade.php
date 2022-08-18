@@ -38,7 +38,7 @@
                     <div class="col-md-8">
                         <div id="caixaValorTotalCompra">
                             <span class="textoCaixa">Valor Total da Compra </span>
-                            <span class="valorCaixa" id="valorTotalCompra">R$ 0,00</span>
+                            <span class="valorCaixa" id="valorTotalCompra">R$ {{$valorTotal}}</span>
                         </div>
                     </div>
                 </div>
