@@ -2,31 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pedidos_Caixa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\ProdutosModel;
 
 class Produtos extends Controller
 {
     public function consultaProduto(){
         $codigo = $_POST["codigo"];
         $quantidade = $_POST["quantidade"];
+        $valorTotal = 0;
+
         $dados = DB::table('produtos')->where('codigoBarras', $codigo)->first();
         if($dados == null){
             $dados = DB::table('produtos')->where('idControle', $codigo)->first();
             if($dados == null){
                 $dados["erro"] = "Produto não encontrado";
-                echo json_encode($dados);
             }else{
                 Pedidos::gravaProduto($dados->id, $quantidade);
                 $dados->valorTotal = number_format(($dados->precoVenda * $quantidade), 2, ',', '.');
                 $dados->precoVenda = number_format($dados->precoVenda, 2, ',', '.');
-                echo json_encode($dados);
             }
         }else{
             Pedidos::gravaProduto($dados->id, $quantidade);
             $dados->valorTotal = number_format(($dados->precoVenda * $quantidade), 2, ',', '.');
             $dados->precoVenda = number_format($dados->precoVenda, 2, ',', '.');
-            echo json_encode($dados);
         }
+
+        $resultado = Pedidos_Caixa::where('ip', env('APP_KEY'))->get();
+
+        foreach($resultado as $r){
+            $dadosProduto = ProdutosModel::find($r->produto);
+            $valorTotal = $valorTotal + ($dadosProduto->precoVenda * $quantidade);
+        }
+
+        $dados->valorTotal = number_format($valorTotal, 2, ',', '.');
+        echo json_encode($dados);
     }
 }

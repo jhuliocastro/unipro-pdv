@@ -38,7 +38,7 @@
                     <div class="col-md-8">
                         <div id="caixaValorTotalCompra">
                             <span class="textoCaixa">Valor Total da Compra </span>
-                            <span class="valorCaixa">R$ 0,00</span>
+                            <span class="valorCaixa" id="valorTotalCompra">R$ 0,00</span>
                         </div>
                     </div>
                 </div>
@@ -87,6 +87,7 @@
                             console.log(response);
                             $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
                             $("#cabecalho").text(response.nome + ' [' + quantidade + ' * ' + response.precoVenda + ' = ' + response.valorTotal + ']');
+                            $("#valorTotalCompra").text('R$ ' + response.valorTotal);
                             $("#codigoProduto").val("");
                         }
                     });
