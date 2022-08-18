@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col cabeca">
-                <span>UNIPRO - PDV</span>
+                <span id="cabecalho">-</span>
             </div>
         </div>
         <div class="row">
@@ -86,6 +86,8 @@
                         success: function(response){
                             console.log(response);
                             $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
+                            $("#cabecalho").text(response.nome + ' [' + quantidade + ' * ' + response.precoVenda + ' = ' + response.valorTotal + ']');
+                            $("#codigoProduto").val("");
                         }
                     });
                 }

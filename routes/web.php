@@ -27,5 +27,5 @@ Route::get('/dashboard', [Dashboard::class, 'index']);
 Route::post('/consulta/produto', [Produtos::class, 'consultaProduto'])->name('consulta.produto');
 
 Route::view('listagemProdutosCaixa', 'listagemProdutosCaixa', [
-    'data' => DB::table('pedidos_caixa')->where('ip', request()->ip())->orderBy('id', 'desc')->get()
+    'data' => DB::table('pedidos_caixa')->where('ip', env('APP_KEY'))->orderBy('id', 'desc')->get()
 ]);

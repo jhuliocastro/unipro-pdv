@@ -13,7 +13,7 @@ class Pedidos extends Controller
         $pedido = new Pedidos_Caixa;
         $pedido->produto = $produto;
         $pedido->quantidade = $quantidade;
-        $pedido->ip = $_SERVER['REMOTE_ADDR'];
+        $pedido->ip = env('APP_KEY');
         $pedido->save();
     }
 }
