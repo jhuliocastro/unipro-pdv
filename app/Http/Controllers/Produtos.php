@@ -9,6 +9,12 @@ use App\Models\ProdutosModel;
 
 class Produtos extends Controller
 {
+    public function pesquisaProduto(){
+        $pesquisa = $_POST["pesquisa"];
+        $resultado = DB::table('produtos')->where('nome', 'LIKE', '%'.$pesquisa.'%')->get();
+        echo json_encode($resultado);
+    }
+
     public function consultaProduto(){
         $codigo = $_POST["codigo"];
         $quantidade = $_POST["quantidade"];

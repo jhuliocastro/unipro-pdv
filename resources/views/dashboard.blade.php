@@ -67,6 +67,21 @@
                     <input type="text" id="produtoPesquisa" name="produtoPesquisa" class="form-control">
                 </div>
             </div>
+            <div class="row">
+                <div class="mb-3">
+                    <table id="tabelaProdutos">
+                        <thead>
+                            <tr>
+                                <td>PRODUTO</td>
+                                <td>QUANTIDADE</td>
+                                <td>UN MED</td>
+                                <td>VALOR</td>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
@@ -102,7 +117,7 @@
                             quantidade: quantidade
                         },
                         dataType: 'json',
-                        success: function(response){
+                        success: function(dados){
                             console.log(response);
                             $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
                             $("#cabecalho").text(response.nome + ' [' + quantidade + ' * ' + response.precoVenda + ' = ' + response.valorTotal + ']');
@@ -113,6 +128,27 @@
                 }
             });
 
+        });
+
+        $("#produtoPesquisa").keyup(function(e){
+                    $.ajax({
+                       url: "{{route('pesquisa.produto')}}",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: 'post',
+                        data: {
+                            pesquisa: $("#produtoPesquisa").val(),
+                        },
+                        dataType: 'json',
+                        success: function(response){
+                            $("#tabelaProdutos tbody tr").remove();
+                            for(dados in response){
+                                console.log(dados);
+                                $("#tabelaProdutos").append("<tr><td>"+dados.nome+"</td><td>"+dados.estoqueAtual+"</td><td>"+dados.unidadeMedida+"</td><td>"+dados.valor+"</td></tr>");
+                            }
+                        }
+                    });
         });
 
         $("#codigoProduto").keydown(function(e){
