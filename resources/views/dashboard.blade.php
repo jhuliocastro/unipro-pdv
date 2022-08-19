@@ -58,14 +58,33 @@
             </div>
         </div>
     </div>
+
+    <div id="dialogPesquisaProduto" title="Pesquisar Produto">
+        <div class="container">
+            <div class="row">
+                <div class="mb-3">
+                    <label>Insira o nome do produto</label>
+                    <input type="text" id="produtoPesquisa" name="produtoPesquisa" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
     <link rel="stylesheet" href="/css/dashboard.css">
     <script src="/js/dashboard.js"></script>
     <script>
+        var dialogPesquisaProduto;
         let quantidade = 1;
-        $(document).ready(function(){
+        $(document).ready(function(e){
+            dialogPesquisaProduto = $("#dialogPesquisaProduto").dialog({
+                autoOpen: false,
+                width: 1000,
+                height: 600,
+                close: $("#codigoProduto").focus()
+            });
+
             $("#codigoProduto").focus();
             $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
 
@@ -93,6 +112,24 @@
                     });
                 }
             });
+
         });
+
+        $("#codigoProduto").keydown(function(e){
+            key(e);
+        });
+
+        $(document).keydown(function(e){
+            key(e);
+        });
+
+        function key(e){
+            switch (e.keyCode){
+                case 115:
+                    e.preventDefault();
+                    dialogPesquisaProduto.dialog('open');
+                    break;
+            }
+        }
     </script>
 @endsection
