@@ -69,13 +69,14 @@
             </div>
             <div class="row">
                 <div class="mb-3">
-                    <table id="tabelaProdutos">
-                        <thead>
+                    <table id="tabelaProdutos" class="table">
+                        <thead class="thead-dark">
                             <tr>
                                 <td>PRODUTO</td>
                                 <td>QUANTIDADE</td>
                                 <td>UN MED</td>
                                 <td>VALOR</td>
+                                <td></td>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -107,6 +108,59 @@
             $("#codigoProduto").keyup(function(e){
                 if(e.which == 13){
                     let codigo = $("#codigoProduto").val();
+                    adicionarProdutoAjax(codigo);
+                }
+            });
+
+        });
+
+        $("#produtoPesquisa").keyup(function(e){
+                let valor = $("#produtoPesquisa").val();
+                if(valor.length > 1){
+                    $.ajax({
+                       url: "{{route('pesquisa.produto')}}",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: 'post',
+                        data: {
+                            pesquisa: valor,
+                        },
+                        dataType: 'json',
+                        success: function(dados){
+                            $("#tabelaProdutos tbody tr").remove();
+                            for(linha=0; linha < dados.length; linha++){
+                                console.log(dados);
+                                $("#tabelaProdutos").append("<tr><td>"+dados[linha].nome+"</td><td>"+dados[linha].estoqueAtual+"</td><td>"+dados[linha].unidadeMedida+"</td><td>R$ "+(dados[linha].precoVenda).toFixed(2)+"</td><td><button type='button' onClick='selecionarProduto(" + dados[linha].idControle + ")' class='btn btn-primary btn-sm'>Selecionar</button></td><</tr>");
+                            }
+                        }
+                    });
+                }
+        });
+
+        $("#codigoProduto").keydown(function(e){
+            key(e);
+        });
+
+        $(document).keydown(function(e){
+            key(e);
+        });
+
+        function key(e){
+            switch (e.keyCode){
+                case 115:
+                    e.preventDefault();
+                    dialogPesquisaProduto.dialog('open');
+                    break;
+            }
+        }
+
+        function selecionarProduto(id){
+            dialogPesquisaProduto.dialog('close');
+            adicionarProdutoAjax(id);
+        }
+
+        function adicionarProdutoAjax(codigo){
                     $.ajax({
                        url: "{{route('consulta.produto')}}",
                         headers: {
@@ -135,47 +189,6 @@
                             $("#codigoProduto").val("");
                         }
                     });
-                }
-            });
-
-        });
-
-        $("#produtoPesquisa").keyup(function(e){
-                    $.ajax({
-                       url: "{{route('pesquisa.produto')}}",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        type: 'post',
-                        data: {
-                            pesquisa: $("#produtoPesquisa").val(),
-                        },
-                        dataType: 'json',
-                        success: function(response){
-                            $("#tabelaProdutos tbody tr").remove();
-                            for(dados in response){
-                                console.log(dados);
-                                $("#tabelaProdutos").append("<tr><td>"+dados.nome+"</td><td>"+dados.estoqueAtual+"</td><td>"+dados.unidadeMedida+"</td><td>"+dados.valor+"</td></tr>");
-                            }
-                        }
-                    });
-        });
-
-        $("#codigoProduto").keydown(function(e){
-            key(e);
-        });
-
-        $(document).keydown(function(e){
-            key(e);
-        });
-
-        function key(e){
-            switch (e.keyCode){
-                case 115:
-                    e.preventDefault();
-                    dialogPesquisaProduto.dialog('open');
-                    break;
-            }
         }
     </script>
 @endsection
