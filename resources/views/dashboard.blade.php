@@ -84,6 +84,7 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @section('scripts')
@@ -117,11 +118,15 @@
                             quantidade: quantidade
                         },
                         dataType: 'json',
-                        success: function(dados){
+                        success: function(response){
                             console.log(response);
-                            $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
-                            $("#cabecalho").text(response.nome + ' [' + quantidade + ' * ' + response.precoVenda + ' = ' + response.valorTotal + ']');
-                            $("#valorTotalCompra").text('R$ ' + response.valorTotal);
+                            if(response.erro){
+                                Notyf.error('You must fill out the form before moving forward');
+                            }else{
+                                $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
+                                $("#cabecalho").text(response.nome + ' [' + quantidade + ' * ' + response.precoVenda + ' = ' + response.valorTotal + ']');
+                                $("#valorTotalCompra").text('R$ ' + response.valorTotal);
+                            }
                             $("#codigoProduto").val("");
                         }
                     });
