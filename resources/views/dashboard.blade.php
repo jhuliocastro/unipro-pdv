@@ -121,7 +121,12 @@
                         success: function(response){
                             console.log(response);
                             if(response.erro){
-                                Notyf.error('You must fill out the form before moving forward');
+                                new Noty({
+                                    type: 'error',
+                                    text: response.erro,
+                                    layout: 'bottomLeft',
+                                    timeout: 2000
+                                }).show();
                             }else{
                                 $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
                                 $("#cabecalho").text(response.nome + ' [' + quantidade + ' * ' + response.precoVenda + ' = ' + response.valorTotal + ']');
