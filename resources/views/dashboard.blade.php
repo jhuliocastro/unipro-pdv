@@ -32,7 +32,7 @@
                     <div class="col-md-4">
                         <div id="caixaQuantidade">
                             <span class="textoCaixa">Quantidade </span>
-                            <span class="valorCaixa">1</span>
+                            <span class="valorCaixa" id="quantidadeInfo"></span>
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -59,6 +59,7 @@
         </div>
     </div>
 
+    <!-- DIALOGO PESQUISAR PRODUTO -->
     <div id="dialogPesquisaProduto" title="Pesquisar Produto">
         <div class="container">
             <div class="row">
@@ -86,13 +87,27 @@
         </div>
     </div>
 
+    <!-- DIALOGO ALTERAR QUANTIDADE-->
+    <div id="dialogAlterarQuantidade" title="Alterar Quantidade">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Insira a quantidade desejada:</label>
+                    <form method="post" action="#" id="formQuantidade">
+                        <input type="number" id="quantidadeProduto" name="quantidadeProduto" class="form-control">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')
     <link rel="stylesheet" href="/css/dashboard.css">
     <script src="/js/dashboard.js"></script>
     <script>
-        var dialogPesquisaProduto;
+        var dialogPesquisaProduto, dialogAlterarQuantidade;
         let quantidade = 1;
         $(document).ready(function(e){
             dialogPesquisaProduto = $("#dialogPesquisaProduto").dialog({
@@ -102,13 +117,25 @@
                 close: $("#codigoProduto").focus()
             });
 
+            dialogAlterarQuantidade = $("#dialogAlterarQuantidade").dialog({
+                autoOpen: false,
+                width: 400,
+                height: 150,
+               // close: $("#codigoProduto").focus()
+            });
+
             $("#codigoProduto").focus();
             $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
+
+            $("#quantidadeInfo").text(quantidade);
 
             $("#codigoProduto").keyup(function(e){
                 if(e.which == 13){
                     let codigo = $("#codigoProduto").val();
-                    adicionarProdutoAjax(codigo);
+                    console.log(codigo);
+                    if(codigo !== ""){
+                        adicionarProdutoAjax(codigo);
+                    }
                 }
             });
 
@@ -148,12 +175,23 @@
 
         function key(e){
             switch (e.keyCode){
-                case 115:
+                case 114: //F3 ALTERAR QUANTIDADE ATUAL
+                    dialogAlterarQuantidade.dialog('open');
+                    break;
+                case 115://F4 PESQUISA PRODUTO
                     e.preventDefault();
                     dialogPesquisaProduto.dialog('open');
                     break;
             }
         }
+
+        $("#formQuantidade").submit(function(e){
+            e.preventDefault();
+            quantidade = $("#quantidadeProduto").val();
+            $("#quantidadeProduto").val("");
+            dialogAlterarQuantidade.dialog('close');
+            $("#quantidadeInfo").text(quantidade);
+        });
 
         function selecionarProduto(id){
             dialogPesquisaProduto.dialog('close');
@@ -189,6 +227,9 @@
                             $("#codigoProduto").val("");
                         }
                     });
+
+                    quantidade = 1;
+                    $("#quantidadeInfo").text(quantidade);
         }
     </script>
 @endsection
