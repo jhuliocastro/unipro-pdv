@@ -32,7 +32,7 @@
                     <div class="col-md-4">
                         <div id="caixaQuantidade">
                             <span class="textoCaixa">Quantidade </span>
-                            <span class="valorCaixa" id="quantidadeInfo"></span>
+                            <span class="valorCaixa" id="quantidadeInfo"></span><span> (F3)</span>
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -45,8 +45,7 @@
                 <div class="row">
                     <div class="col">
                         <div id="caixaFinalizarVenda">
-                            Finalizar venda (F4)
-                            R$ 0,00
+                            F5 - CANCELAR ITEM
                         </div>
                     </div>
                 </div>
@@ -222,7 +221,7 @@
                             }else{
                                 $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
                                 $("#cabecalho").text(response.nome + ' [' + quantidade + ' * ' + response.precoVenda + ' = ' + response.valorTotal + ']');
-                                $("#valorTotalCompra").text('R$ ' + response.valorTotal);
+                                atualizarValorTotal();
                             }
                             $("#codigoProduto").val("");
                         }
@@ -230,6 +229,12 @@
 
                     quantidade = 1;
                     $("#quantidadeInfo").text(quantidade);
+        }
+
+        function atualizarValorTotal(){
+            $.get("{{route('valorTotalCaixa.pedidos')}}", function(e){
+                $("#valorTotalCompra").text('R$ ' + e);
+            });
         }
     </script>
 @endsection

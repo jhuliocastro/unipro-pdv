@@ -1,8 +1,8 @@
+<table class="tabelaProdutos">
 @foreach($data as $d)
     <?php
         $dadosProduto = \Illuminate\Support\Facades\DB::table('produtos')->where('id', $d->produto)->first();
     ?>
-    <table class="tabelaProdutos">
         <tr>
             <td>{{$d->id}}</td>
             <td class="nomeProduto">{{$dadosProduto->nome}}</td>
@@ -15,5 +15,5 @@
             <td></td>
             <td></td>
         </tr>
-    </table>
 @endforeach
+</table>

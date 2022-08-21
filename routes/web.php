@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Produtos;
+use App\Http\Controllers\Pedidos;
 use App\Models\Pedidos_Caixa;
 
 Route::get('/', function () {
@@ -26,6 +27,8 @@ Route::get('/dashboard', [Dashboard::class, 'index']);
 
 Route::post('/consulta/produto', [Produtos::class, 'consultaProduto'])->name('consulta.produto');
 Route::post('/pesquisa/produto', [Produtos::class, 'pesquisaProduto'])->name('pesquisa.produto');
+
+Route::get('/valorTotalCaixa', [Pedidos::class, 'valorTotalCaixa2'])->name('valorTotalCaixa.pedidos');
 
 Route::view('listagemProdutosCaixa', 'listagemProdutosCaixa', [
     'data' => DB::table('pedidos_caixa')->where('ip', env('APP_KEY'))->orderBy('id', 'desc')->get()
