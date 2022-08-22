@@ -18,6 +18,11 @@ class Pedidos extends Controller
         $pedido->save();
     }
 
+    public function novaVenda(){
+        $return = Pedidos_Caixa::where('ip', env('APP_KEY'))->delete();
+        echo $return;
+    }
+
     public static function valorTotalCaixa(){
         $valorTotal = 0;
 

@@ -31,6 +31,8 @@ Route::post('/pesquisa/produto', [Produtos::class, 'pesquisaProduto'])->name('pe
 Route::get('/valorTotalCaixa', [Pedidos::class, 'valorTotalCaixa2'])->name('valorTotalCaixa.pedidos');
 Route::get('/cancelarItem', [Pedidos::class, 'cancelarItem'])->name('cancelar.item');
 
+Route::get('/novavenda', [Pedidos::class, 'novaVenda'])->name('nova.venda');
+
 Route::view('listagemProdutosCaixa', 'listagemProdutosCaixa', [
     'data' => DB::table('pedidos_caixa')->where('ip', env('APP_KEY'))->orderBy('id', 'desc')->get()
 ]);

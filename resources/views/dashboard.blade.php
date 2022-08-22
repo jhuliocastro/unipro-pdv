@@ -45,7 +45,8 @@
                 <div class="row">
                     <div class="col">
                         <div id="caixaFinalizarVenda">
-                            F5 - CANCELAR ITEM
+                            F5 - CANCELAR ITEM<br/>
+                            F6 - NOVA VENDA
                         </div>
                     </div>
                 </div>
@@ -194,6 +195,7 @@
         function key(e){
             switch (e.keyCode){
                 case 114: //F3 ALTERAR QUANTIDADE ATUAL
+                    e.preventDefault();
                     dialogAlterarQuantidade.dialog('open');
                     break;
                 case 115://F4 PESQUISA PRODUTO
@@ -201,9 +203,42 @@
                     dialogPesquisaProduto.dialog('open');
                     break;
                 case 116: //F5 CANCELAR ITEM
+                    e.preventDefault();
                     dialogCancelarItem.dialog('open');
                     break;
+                case 117://F6 NOVA VENDA
+                    e.preventDefault();
+                    confirmacaoNovaVenda();
             }
+        }
+
+        function confirmacaoNovaVenda(){
+            let n = new Noty({
+                text: 'Confirma Nova Venda?',
+                layout: 'bottomLeft',
+                buttons: [
+                    Noty.button('SIM', 'btn btn-success', function () {
+                        n.close();
+                        $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
+                        $("#cabecalho").text('-');
+                        atualizarValorTotal();
+                        $.get("{{route('nova.venda')}}", function(e){
+                            console.log(e);
+                            new Noty({
+                                type: 'success',
+                                text: 'Ação concluída!',
+                                layout: 'bottomLeft',
+                                timeout: 2000
+                            }).show();
+                        });
+                    }, {id: 'button1', 'data-status': 'ok'}),
+
+                    Noty.button('NÃO', 'btn btn-error', function () {
+                        n.close();
+                    })
+                ]
+            });
+            n.show();
         }
 
         $("#formQuantidade").submit(function(e){
