@@ -43,10 +43,19 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-4">
+                        <div id="caixaQuantidade">
+                            <span class="textoCaixa">Desconto </span>
+                            <span class="valorCaixa" id="descontoInfo"></span><span> (F2)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col">
                         <div id="caixaFinalizarVenda">
                             F5 - CANCELAR ITEM<br/>
-                            F6 - NOVA VENDA
+                            F6 - NOVA VENDA<br/>
+                            F7 - CONCLUIR VENDA
                         </div>
                     </div>
                 </div>
@@ -114,6 +123,80 @@
         </div>
     </div>
 
+    <div id="dialogDesconto" title="Desconto">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Valor do Desconto:</label>
+                    <form method="post" action="#" id="formDesconto">
+                        <input type="text" id="valorDescontoVenda" name="valorDescontoVenda" class="form-control">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dialogFinalizarVenda" title="Pagamento">
+        <form method="post" action="{{route('finalizar.venda')}}">
+            @csrf
+            <fieldset>
+               <div class="row mb-2">
+                   <div class="cell-sm-3">Dinheiro</div>
+                   <div class="cell-sm-9">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">R$</span>
+                            <input type="text" name="dinheiroPagamento" id="dinheiroPagamento" class="form-control form-control-sm">
+                        </div>
+                   </div>
+               </div>
+                <div class="row mb-2">
+                    <div class="cell-sm-3">Débito</div>
+                    <div class="cell-sm-9">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">R$</span>
+                            <input type="text" name="debitoPagamento" id="debitoPagamento" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="cell-sm-3">Crédito</div>
+                    <div class="cell-sm-9">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">R$</span>
+                            <input type="text" name="creditoPagamento" id="creditoPagamento" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="cell-sm-3">Crediário</div>
+                    <div class="cell-sm-9">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">R$</span>
+                            <input type="text" name="crediarioPagamento" id="crediarioPagamento" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="cell-sm-3">Pix</div>
+                    <div class="cell-sm-9">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">R$</span>
+                            <input type="text" name="pixPagamento" id="pixPagamento" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <input type="hidden" id="descontoFinalizar" name="descontoFinalizar">
+                <input type="hidden" id="valorTotalFinalizar" name="valorTotalFinalizar">
+                <div style="text-align: right; font-size: 20px;">
+                    Valor Total: <span id="valorTotalPagamento" style="font-weight: bold;">R$ 0,00</span><br/>
+                </div>
+                <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+            </fieldset>
+        </form>
+    </div>
+
 @endsection
 
 @section('scripts')
@@ -122,6 +205,7 @@
     <script>
         var dialogPesquisaProduto, dialogAlterarQuantidade;
         let quantidade = 1;
+        let desconto = 0;
         $(document).ready(function(e){
             dialogPesquisaProduto = $("#dialogPesquisaProduto").dialog({
                 autoOpen: false,
@@ -143,8 +227,21 @@
                 height: 150
             });
 
+            dialogFinalizarVenda = $("#dialogFinalizarVenda").dialog({
+                autoOpen: false,
+                width: 400,
+                height: 500
+            });
+
+            dialogDesconto = $("#dialogDesconto").dialog({
+                autoOpen: false,
+                width: 400,
+                height: 150
+            });
+
             $("#codigoProduto").focus();
             $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
+            atualizarValorTotal();
 
             $("#quantidadeInfo").text(quantidade);
 
@@ -158,6 +255,12 @@
                 }
             });
 
+            $("#dinheiroPagamento").mask('#.##0,00', {reverse: true});
+            $("#crediarioPagamento").mask('#.##0,00', {reverse: true});
+            $("#creditoPagamento").mask('#.##0,00', {reverse: true});
+            $("#debitoPagamento").mask('#.##0,00', {reverse: true});
+            $("#pixPagamento").mask('#.##0,00', {reverse: true});
+            $("#valorDescontoVenda").mask('#.##0,00', {reverse: true});
         });
 
         $("#produtoPesquisa").keyup(function(e){
@@ -194,6 +297,10 @@
 
         function key(e){
             switch (e.keyCode){
+                case 113: //F2 DESCONTO
+                    e.preventDefault();
+                    dialogDesconto.dialog('open');
+                    break;
                 case 114: //F3 ALTERAR QUANTIDADE ATUAL
                     e.preventDefault();
                     dialogAlterarQuantidade.dialog('open');
@@ -209,6 +316,11 @@
                 case 117://F6 NOVA VENDA
                     e.preventDefault();
                     confirmacaoNovaVenda();
+                    break;
+                case 118://F7 CONCLUIR VENDA
+                    e.preventDefault();
+                    dialogFinalizarVenda.dialog('open');
+                    break;
             }
         }
 
@@ -247,6 +359,20 @@
             $("#quantidadeProduto").val("");
             dialogAlterarQuantidade.dialog('close');
             $("#quantidadeInfo").text(quantidade);
+        });
+
+        $("#formDesconto").submit(function(e){
+            e.preventDefault();
+            desconto = $("#valorDescontoVenda").val();
+            atualizarValorTotal();
+            $("#valorDescontoVenda").val('');
+            dialogDesconto.dialog('close');
+            new Noty({
+                type: 'success',
+                text: 'Ação concluída!',
+                layout: 'bottomLeft',
+                timeout: 2000
+            }).show();
         });
 
         $("#formCancelarItem").submit(function(e){
@@ -327,6 +453,11 @@
         function atualizarValorTotal(){
             $.get("{{route('valorTotalCaixa.pedidos')}}", function(e){
                 $("#valorTotalCompra").text('R$ ' + e);
+                let valor = parseFloat(e) - parseFloat(desconto);
+                $("#valorTotalPagamento").text('R$ ' + valor.toFixed(2));
+                $("#valorTotalFinalizar").val(e);
+                $("#descontoFinalizar").val(desconto);
+                $("#descontoInfo").text('R$ ' + desconto);
             });
         }
     </script>

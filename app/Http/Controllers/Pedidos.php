@@ -7,9 +7,11 @@ use App\Models\ProdutosModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class Pedidos extends Controller
 {
+
     public static function gravaProduto(int $produto, int $quantidade){
         $pedido = new Pedidos_Caixa;
         $pedido->produto = $produto;
@@ -21,6 +23,18 @@ class Pedidos extends Controller
     public function novaVenda(){
         $return = Pedidos_Caixa::where('ip', env('APP_KEY'))->delete();
         echo $return;
+    }
+
+    public function finalizarVenda(){
+        $valorPagamento = (float)$_POST["dinheiroPagamento"] + (float)$_POST["debitoPagamento"] + (float)$_POST["creditoPagamento"] + (float)$_POST["crediarioPagamento"] + (float)$_POST["pixPagamento"];
+        $valorTotal = (float)$_POST["valorTotalFinalizar"] - (float)$_POST["descontoFinalizar"];
+        if($valorPagamento < $valorTotal){
+            Alert::success('teste', 'teste');
+        }else{
+            Alert::success('teste', 'teste');
+        }
+
+        return view('dashboard', ["valorTotal" => Pedidos::valorTotalCaixa()]);
     }
 
     public static function valorTotalCaixa(){

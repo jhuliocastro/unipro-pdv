@@ -8,6 +8,8 @@
         <script src="/js/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.js" integrity="sha512-mgZL3SZ/vIooDg2mU2amX6NysMlthFl/jDbscSRgF/k3zmICLe6muAs7YbITZ+61FeUoo1plofYAocoR5Sa1rQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha512-0XDfGxFliYJPFrideYOoxdgNIvrwGTLnmK20xZbCAvPfLGQMzHUsaqZK8ZoH+luXGRxTrS46+Aq400nCnAT0/w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dinero.js/1.0.4/dinero.min.js" integrity="sha512-yo8ZzLQTKbzcAf+1XXnqFDXmX7Qf8emBLtH4+LBDjIYbJ++iXxJk64ogB8DPubRmYnMRrbhsaz4VZMK3aeEO8w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <meta name="csrf-token" content="{{ csrf_token() }}" />
         <style>
             body{
@@ -18,5 +20,6 @@
     <body>
         @yield('content')
         @yield('scripts')
+        @include('sweetalert::alert')
     </body>
 </html>
