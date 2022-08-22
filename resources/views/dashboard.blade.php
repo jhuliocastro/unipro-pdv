@@ -100,6 +100,19 @@
         </div>
     </div>
 
+    <div id="dialogCancelarItem" title="Cancelar Item">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Insira o ID do produto:</label>
+                    <form method="post" action="#" id="formCancelarItem">
+                        <input type="number" id="idCancelamentoProduto" name="idCancelamentoProduto" class="form-control">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')
@@ -121,6 +134,12 @@
                 width: 400,
                 height: 150,
                // close: $("#codigoProduto").focus()
+            });
+
+            dialogCancelarItem = $("#dialogCancelarItem").dialog({
+                autoOpen: false,
+                width: 400,
+                height: 150
             });
 
             $("#codigoProduto").focus();
@@ -181,6 +200,9 @@
                     e.preventDefault();
                     dialogPesquisaProduto.dialog('open');
                     break;
+                case 116: //F5 CANCELAR ITEM
+                    dialogCancelarItem.dialog('open');
+                    break;
             }
         }
 
@@ -190,6 +212,42 @@
             $("#quantidadeProduto").val("");
             dialogAlterarQuantidade.dialog('close');
             $("#quantidadeInfo").text(quantidade);
+        });
+
+        $("#formCancelarItem").submit(function(e){
+            e.preventDefault();
+            let id = $("#idCancelamentoProduto").val();
+            if(id === '' || id === null){
+                new Noty({
+                    type: 'warning',
+                    text: 'ID em branco!',
+                    layout: 'bottomLeft',
+                    timeout: 2000
+                }).show();
+            }else{
+                $("#idCancelamentoProduto").val('');
+                dialogCancelarItem.dialog("close");
+                $.get("{{route('cancelar.item')}}", {id: id}, function(e){
+                    if(e === '1'){
+                        $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
+                        $("#cabecalho").text('-');
+                        atualizarValorTotal();
+                        new Noty({
+                            type: 'success',
+                            text: 'Item cancelado!',
+                            layout: 'bottomLeft',
+                            timeout: 2000
+                        }).show();
+                    }else{
+                        new Noty({
+                            type: 'error',
+                            text: 'Erro ao cancelar item!',
+                            layout: 'bottomLeft',
+                            timeout: 2000
+                        }).show();
+                    }
+                });
+            }
         });
 
         function selecionarProduto(id){

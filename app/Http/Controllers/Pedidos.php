@@ -47,4 +47,11 @@ class Pedidos extends Controller
 
         echo $valorTotal;
     }
+
+    public function cancelarItem(){
+        $id = $_GET["id"];
+        $item = Pedidos_Caixa::find($id);
+        $item = $item->delete();
+        echo $item;
+    }
 }
