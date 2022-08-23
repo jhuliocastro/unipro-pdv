@@ -29,9 +29,9 @@ class Pedidos extends Controller
         $valorPagamento = (float)$_POST["dinheiroPagamento"] + (float)$_POST["debitoPagamento"] + (float)$_POST["creditoPagamento"] + (float)$_POST["crediarioPagamento"] + (float)$_POST["pixPagamento"];
         $valorTotal = (float)$_POST["valorTotalFinalizar"] - (float)$_POST["descontoFinalizar"];
         if($valorPagamento < $valorTotal){
-            Alert::success('teste', 'teste');
+            Alert::error('Valor informado é menor do que o valor da venda!', 'Verifique e tente novamente.');
         }else{
-            Alert::success('teste', 'teste');
+
         }
 
         return view('dashboard', ["valorTotal" => Pedidos::valorTotalCaixa()]);
