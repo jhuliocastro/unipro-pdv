@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\Vendas;
+use App\Models\Vendas_Produtos;
 
 class Pedidos extends Controller
 {
@@ -31,7 +33,36 @@ class Pedidos extends Controller
         if($valorPagamento < $valorTotal){
             Alert::error('Valor informado é menor do que o valor da venda!', 'Verifique e tente novamente.');
         }else{
-
+            $troco = $valorPagamento - $valorTotal;
+            if($_POST["clienteFinalizar"] == null){
+                $_POST["clienteFinalizar"] = 1;
+            }
+            $venda = Vendas::create([
+                'cliente' => $_POST["clienteFinalizar"],
+                'valorTotal' => (float)$_POST['valorTotalFinalizar'],
+                'desconto' => (float)$_POST["descontoFinalizar"],
+                'troco' => (float)$troco,
+                'valorPago' => (float)$valorPagamento,
+                'dinheiro' => (float)$_POST["dinheiroPagamento"],
+                'debito' => (float)$_POST["debitoPagamento"],
+                'credito' => (float)$_POST["creditoPagamento"],
+                'crediario' => (float)$_POST["crediarioPagamento"],
+                'pix' => (float)$_POST["pixPagamento"]
+            ]);
+            if($venda->exists == true){
+                $produtos = Pedidos_Caixa::where('ip', env('APP_KEY'))->get();
+                foreach($produtos as $produto){
+                    Vendas_Produtos::create([
+                        'id_venda' => $venda->id,
+                        'produto' => $produto->produto,
+                        'quantidade' => $produto->quantidade
+                    ]);
+                }
+                Pedidos_Caixa::where('ip', env('APP_KEY'))->delete();
+                Alert::success('Venda Concluída', 'Troco: R$ '.number_format($troco, 2, ',', '.'));
+            }else{
+                Alert::error('Erro ao concluir venda!', 'Consulte o administrador do sistema.');
+            }
         }
 
         return view('dashboard', ["valorTotal" => Pedidos::valorTotalCaixa()]);
