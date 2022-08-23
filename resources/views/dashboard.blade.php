@@ -11,9 +11,7 @@
                 <div class="row">
                     <div class="col">
                         <span id="definirCliente">Definir Cliente (F1)</span> <br/>
-                        @if(!isset($_SESSION["cliente"]))
-                            Nenhum Cliente Informado
-                        @endif
+                        <span id="clienteInfo" style="font-weight: bold;">Nenhum Cliente Informado</span>
                     </div>
                 </div>
                 <div class="row">
@@ -64,6 +62,32 @@
                 <span>CUPOM FISCAL</span>
                 <hr>
                 <div id="conteudoCupom"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DIALOGO INFORMAR CLIENTE -->
+    <div id="dialogInformarCliente" title="Informar Cliente">
+        <div class="container">
+            <div class="row">
+                <div class="mb-3">
+                    <label>Insira o nome do cliente</label>
+                    <input type="text" id="clientePesquisa" name="clientePesquisa" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3">
+                    <table id="tabelaClientes" class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <td>ID</td>
+                                <td>CLIENTE</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -188,6 +212,7 @@
                 <hr>
                 <input type="hidden" id="descontoFinalizar" name="descontoFinalizar">
                 <input type="hidden" id="valorTotalFinalizar" name="valorTotalFinalizar">
+                <input type="hidden" id="clienteFinalizar" name="clienteFinalizar">
                 <div style="text-align: right; font-size: 20px;">
                     Valor Total: <span id="valorTotalPagamento" style="font-weight: bold;">R$ 0,00</span><br/>
                 </div>
@@ -203,11 +228,19 @@
     <link rel="stylesheet" href="/css/dashboard.css">
     <script src="/js/dashboard.js"></script>
     <script>
-        var dialogPesquisaProduto, dialogAlterarQuantidade;
+        var dialogPesquisaProduto, dialogAlterarQuantidade, dialogInformarCliente;
         let quantidade = 1;
         let desconto = 0;
+        var cliente = null;
         $(document).ready(function(e){
             dialogPesquisaProduto = $("#dialogPesquisaProduto").dialog({
+                autoOpen: false,
+                width: 1000,
+                height: 600,
+                close: $("#codigoProduto").focus()
+            });
+
+            dialogInformarCliente = $("#dialogInformarCliente").dialog({
                 autoOpen: false,
                 width: 1000,
                 height: 600,
@@ -287,6 +320,30 @@
                 }
         });
 
+        $("#clientePesquisa").keyup(function(e){
+                let valor = $("#clientePesquisa").val();
+                if(valor.length > 1){
+                    $.ajax({
+                       url: "{{route('pesquisa.cliente')}}",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: 'post',
+                        data: {
+                            pesquisa: valor,
+                        },
+                        dataType: 'json',
+                        success: function(dados){
+                            $("#tabelaClientes tbody tr").remove();
+                            for(linha=0; linha < dados.length; linha++){
+                                console.log(dados);
+                                $("#tabelaClientes").append("<tr><td>"+dados[linha].id+"</td><td>"+dados[linha].nome+"</td><td><button type='button' onClick='selecionarCliente(" + dados[linha].id + ")' class='btn btn-primary btn-sm'>Selecionar</button></td><</tr>");
+                            }
+                        }
+                    });
+                }
+        });
+
         $("#codigoProduto").keydown(function(e){
             key(e);
         });
@@ -297,6 +354,10 @@
 
         function key(e){
             switch (e.keyCode){
+                case 112: //F1 INFORMAR CLIENTE
+                    e.preventDefault();
+                    dialogInformarCliente.dialog('open');
+                    break;
                 case 113: //F2 DESCONTO
                     e.preventDefault();
                     dialogDesconto.dialog('open');
@@ -416,6 +477,26 @@
             adicionarProdutoAjax(id);
         }
 
+        function selecionarCliente(id){
+            dialogInformarCliente.dialog('close');
+            $.ajax({
+                url: "{{route('dados.cliente')}}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'post',
+                data: {
+                    id: id,
+                },
+                dataType: 'json',
+                success: function(dados){
+                    cliente = id;
+                    $('#clienteInfo').text(dados.nome);
+                    $('#clienteFinalizar').val(id);
+                }
+            });  
+        }
+
         function adicionarProdutoAjax(codigo){
                     $.ajax({
                        url: "{{route('consulta.produto')}}",
@@ -460,9 +541,5 @@
                 $("#descontoInfo").text('R$ ' + desconto);
             });
         }
-
-        $(document).click(function(){
-            $("#codigoProduto").focus();
-        });
     </script>
 @endsection

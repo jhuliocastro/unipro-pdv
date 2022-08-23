@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Produtos;
 use App\Http\Controllers\Pedidos;
+use App\Http\Controllers\Clientes;
 use App\Models\Pedidos_Caixa;
 
 Route::get('/', function () {
@@ -27,6 +28,9 @@ Route::get('/dashboard', [Dashboard::class, 'index']);
 
 Route::post('/consulta/produto', [Produtos::class, 'consultaProduto'])->name('consulta.produto');
 Route::post('/pesquisa/produto', [Produtos::class, 'pesquisaProduto'])->name('pesquisa.produto');
+
+Route::post('/pesquisa/cliente', [Clientes::class, 'pesquisaClientes'])->name('pesquisa.cliente');
+Route::post('/dados/cliente', [Clientes::class, 'dadosCliente'])->name('dados.cliente');;
 
 Route::get('/valorTotalCaixa', [Pedidos::class, 'valorTotalCaixa2'])->name('valorTotalCaixa.pedidos');
 Route::get('/cancelarItem', [Pedidos::class, 'cancelarItem'])->name('cancelar.item');
