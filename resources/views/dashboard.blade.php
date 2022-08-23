@@ -10,7 +10,7 @@
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <span id="definirCliente">Definir Cliente (F2)</span> <br/>
+                        <span id="definirCliente">Definir Cliente (F1)</span> <br/>
                         @if(!isset($_SESSION["cliente"]))
                             Nenhum Cliente Informado
                         @endif
@@ -460,5 +460,9 @@
                 $("#descontoInfo").text('R$ ' + desconto);
             });
         }
+
+        $(document).click(function(){
+            $("#codigoProduto").focus();
+        });
     </script>
 @endsection
