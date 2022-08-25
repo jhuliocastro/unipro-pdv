@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Vendas;
 use App\Models\Vendas_Produtos;
+use App\Models\PrintCupom;
 
 class Pedidos extends Controller
 {
@@ -79,6 +80,10 @@ class Pedidos extends Controller
                     $dadosProduto->save();
                 }
                 Pedidos_Caixa::where('ip', env('APP_KEY'))->delete();
+                PrintCupom::create([
+                    'venda' => $venda->id,
+                    'key' => env('APP_KEY')
+                ]);
                 Alert::success('Venda Concluída', 'Troco: R$ '.number_format($troco, 2, ',', '.'));
             }else{
                 Alert::error('Erro ao concluir venda!', 'Consulte o administrador do sistema.');

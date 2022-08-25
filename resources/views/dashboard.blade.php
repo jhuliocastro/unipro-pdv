@@ -79,11 +79,11 @@
                 <div class="mb-3">
                     <table id="tabelaClientes" class="table">
                         <thead class="thead-dark">
-                            <tr>
-                                <td>ID</td>
-                                <td>CLIENTE</td>
-                                <td></td>
-                            </tr>
+                        <tr>
+                            <td>ID</td>
+                            <td>CLIENTE</td>
+                            <td></td>
+                        </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -105,13 +105,13 @@
                 <div class="mb-3">
                     <table id="tabelaProdutos" class="table">
                         <thead class="thead-dark">
-                            <tr>
-                                <td>PRODUTO</td>
-                                <td>QUANTIDADE</td>
-                                <td>UN MED</td>
-                                <td>VALOR</td>
-                                <td></td>
-                            </tr>
+                        <tr>
+                            <td>PRODUTO</td>
+                            <td>QUANTIDADE</td>
+                            <td>UN MED</td>
+                            <td>VALOR</td>
+                            <td></td>
+                        </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -164,15 +164,15 @@
         <form method="post" action="{{route('finalizar.venda')}}">
             @csrf
             <fieldset>
-               <div class="row mb-2">
-                   <div class="cell-sm-3">Dinheiro</div>
-                   <div class="cell-sm-9">
+                <div class="row mb-2">
+                    <div class="cell-sm-3">Dinheiro</div>
+                    <div class="cell-sm-9">
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">R$</span>
                             <input type="text" name="dinheiroPagamento" id="dinheiroPagamento" class="form-control form-control-sm">
                         </div>
-                   </div>
-               </div>
+                    </div>
+                </div>
                 <div class="row mb-2">
                     <div class="cell-sm-3">Débito</div>
                     <div class="cell-sm-9">
@@ -251,7 +251,7 @@
                 autoOpen: false,
                 width: 400,
                 height: 150,
-               // close: $("#codigoProduto").focus()
+                // close: $("#codigoProduto").focus()
             });
 
             dialogCancelarItem = $("#dialogCancelarItem").dialog({
@@ -297,51 +297,51 @@
         });
 
         $("#produtoPesquisa").keyup(function(e){
-                let valor = $("#produtoPesquisa").val();
-                if(valor.length > 1){
-                    $.ajax({
-                       url: "{{route('pesquisa.produto')}}",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        type: 'post',
-                        data: {
-                            pesquisa: valor,
-                        },
-                        dataType: 'json',
-                        success: function(dados){
-                            $("#tabelaProdutos tbody tr").remove();
-                            for(linha=0; linha < dados.length; linha++){
-                                console.log(dados);
-                                $("#tabelaProdutos").append("<tr><td>"+dados[linha].nome+"</td><td>"+dados[linha].estoqueAtual+"</td><td>"+dados[linha].unidadeMedida+"</td><td>R$ "+(dados[linha].precoVenda).toFixed(2)+"</td><td><button type='button' onClick='selecionarProduto(" + dados[linha].idControle + ")' class='btn btn-primary btn-sm'>Selecionar</button></td><</tr>");
-                            }
+            let valor = $("#produtoPesquisa").val();
+            if(valor.length > 1){
+                $.ajax({
+                    url: "{{route('pesquisa.produto')}}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: 'post',
+                    data: {
+                        pesquisa: valor,
+                    },
+                    dataType: 'json',
+                    success: function(dados){
+                        $("#tabelaProdutos tbody tr").remove();
+                        for(linha=0; linha < dados.length; linha++){
+                            console.log(dados);
+                            $("#tabelaProdutos").append("<tr><td>"+dados[linha].nome+"</td><td>"+dados[linha].estoqueAtual+"</td><td>"+dados[linha].unidadeMedida+"</td><td>R$ "+(dados[linha].precoVenda).toFixed(2)+"</td><td><button type='button' onClick='selecionarProduto(" + dados[linha].idControle + ")' class='btn btn-primary btn-sm'>Selecionar</button></td><</tr>");
                         }
-                    });
-                }
+                    }
+                });
+            }
         });
 
         $("#clientePesquisa").keyup(function(e){
-                let valor = $("#clientePesquisa").val();
-                if(valor.length > 1){
-                    $.ajax({
-                       url: "{{route('pesquisa.cliente')}}",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        type: 'post',
-                        data: {
-                            pesquisa: valor,
-                        },
-                        dataType: 'json',
-                        success: function(dados){
-                            $("#tabelaClientes tbody tr").remove();
-                            for(linha=0; linha < dados.length; linha++){
-                                console.log(dados);
-                                $("#tabelaClientes").append("<tr><td>"+dados[linha].id+"</td><td>"+dados[linha].nome+"</td><td><button type='button' onClick='selecionarCliente(" + dados[linha].id + ")' class='btn btn-primary btn-sm'>Selecionar</button></td><</tr>");
-                            }
+            let valor = $("#clientePesquisa").val();
+            if(valor.length > 1){
+                $.ajax({
+                    url: "{{route('pesquisa.cliente')}}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: 'post',
+                    data: {
+                        pesquisa: valor,
+                    },
+                    dataType: 'json',
+                    success: function(dados){
+                        $("#tabelaClientes tbody tr").remove();
+                        for(linha=0; linha < dados.length; linha++){
+                            console.log(dados);
+                            $("#tabelaClientes").append("<tr><td>"+dados[linha].id+"</td><td>"+dados[linha].nome+"</td><td><button type='button' onClick='selecionarCliente(" + dados[linha].id + ")' class='btn btn-primary btn-sm'>Selecionar</button></td><</tr>");
                         }
-                    });
-                }
+                    }
+                });
+            }
         });
 
         $("#codigoProduto").keydown(function(e){
@@ -494,41 +494,41 @@
                     $('#clienteInfo').text(dados.nome);
                     $('#clienteFinalizar').val(id);
                 }
-            });  
+            });
         }
 
         function adicionarProdutoAjax(codigo){
-                    $.ajax({
-                       url: "{{route('consulta.produto')}}",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        type: 'post',
-                        data: {
-                            codigo: codigo,
-                            quantidade: quantidade
-                        },
-                        dataType: 'json',
-                        success: function(response){
-                            console.log(response);
-                            if(response.erro){
-                                new Noty({
-                                    type: 'error',
-                                    text: response.erro,
-                                    layout: 'bottomLeft',
-                                    timeout: 2000
-                                }).show();
-                            }else{
-                                $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
-                                $("#cabecalho").text(response.nome + ' [' + quantidade + ' * ' + response.precoVenda + ' = ' + response.valorTotal + ']');
-                                atualizarValorTotal();
-                            }
-                            $("#codigoProduto").val("");
-                        }
-                    });
+            $.ajax({
+                url: "{{route('consulta.produto')}}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'post',
+                data: {
+                    codigo: codigo,
+                    quantidade: quantidade
+                },
+                dataType: 'json',
+                success: function(response){
+                    console.log(response);
+                    if(response.erro){
+                        new Noty({
+                            type: 'error',
+                            text: response.erro,
+                            layout: 'bottomLeft',
+                            timeout: 2000
+                        }).show();
+                    }else{
+                        $("#conteudoCupom").load('<?php echo url('listagemProdutosCaixa'); ?>');
+                        $("#cabecalho").text(response.nome + ' [' + quantidade + ' * ' + response.precoVenda + ' = ' + response.valorTotal + ']');
+                        atualizarValorTotal();
+                    }
+                    $("#codigoProduto").val("");
+                }
+            });
 
-                    quantidade = 1;
-                    $("#quantidadeInfo").text(quantidade);
+            quantidade = 1;
+            $("#quantidadeInfo").text(quantidade);
         }
 
         function atualizarValorTotal(){

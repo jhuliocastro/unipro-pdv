@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,22 +20,24 @@ use App\Http\Controllers\Clientes;
 use App\Models\Pedidos_Caixa;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
-Route::get('/dashboard', [Dashboard::class, 'index']);
+require __DIR__.'/auth.php';
 
-Route::post('/consulta/produto', [Produtos::class, 'consultaProduto'])->name('consulta.produto');
-Route::post('/pesquisa/produto', [Produtos::class, 'pesquisaProduto'])->name('pesquisa.produto');
+Route::get('/dashboard', [Dashboard::class, 'index'])->middleware(['auth'])->name('dashboard');
 
-Route::post('/pesquisa/cliente', [Clientes::class, 'pesquisaClientes'])->name('pesquisa.cliente');
-Route::post('/dados/cliente', [Clientes::class, 'dadosCliente'])->name('dados.cliente');;
+Route::post('/consulta/produto', [Produtos::class, 'consultaProduto'])->middleware(['auth'])->name('consulta.produto');
+Route::post('/pesquisa/produto', [Produtos::class, 'pesquisaProduto'])->middleware(['auth'])->name('pesquisa.produto');
 
-Route::get('/valorTotalCaixa', [Pedidos::class, 'valorTotalCaixa2'])->name('valorTotalCaixa.pedidos');
-Route::get('/cancelarItem', [Pedidos::class, 'cancelarItem'])->name('cancelar.item');
+Route::post('/pesquisa/cliente', [Clientes::class, 'pesquisaClientes'])->middleware(['auth'])->name('pesquisa.cliente');
+Route::post('/dados/cliente', [Clientes::class, 'dadosCliente'])->middleware(['auth'])->name('dados.cliente');;
 
-Route::get('/novavenda', [Pedidos::class, 'novaVenda'])->name('nova.venda');
-Route::post('/finalizarVenda', [Pedidos::class, 'finalizarVenda'])->name('finalizar.venda');
+Route::get('/valorTotalCaixa', [Pedidos::class, 'valorTotalCaixa2'])->middleware(['auth'])->name('valorTotalCaixa.pedidos');
+Route::get('/cancelarItem', [Pedidos::class, 'cancelarItem'])->middleware(['auth'])->name('cancelar.item');
+
+Route::get('/novavenda', [Pedidos::class, 'novaVenda'])->middleware(['auth'])->name('nova.venda');
+Route::post('/finalizarVenda', [Pedidos::class, 'finalizarVenda'])->middleware(['auth'])->name('finalizar.venda');
 
 Route::view('listagemProdutosCaixa', 'listagemProdutosCaixa', [
     'data' => DB::table('pedidos_caixa')->where('ip', env('APP_KEY'))->orderBy('id', 'desc')->get()
