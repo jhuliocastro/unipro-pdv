@@ -73,6 +73,10 @@ class Pedidos extends Controller
                         'produto' => $produto->produto,
                         'quantidade' => $produto->quantidade
                     ]);
+
+                    $dadosProduto = ProdutosModel::find($produto->produto);
+                    $dadosProduto->estoqueAtual = $dadosProduto->estoqueAtual - $produto->quantidade;
+                    $dadosProduto->save();
                 }
                 Pedidos_Caixa::where('ip', env('APP_KEY'))->delete();
                 Alert::success('Venda Concluída', 'Troco: R$ '.number_format($troco, 2, ',', '.'));
