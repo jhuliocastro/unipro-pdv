@@ -28,6 +28,21 @@ class Pedidos extends Controller
     }
 
     public function finalizarVenda(){
+        $_POST["dinheiroPagamento"] = str_replace('.', '', $_POST["dinheiroPagamento"]);
+        $_POST["dinheiroPagamento"] = str_replace(',', '.', $_POST["dinheiroPagamento"]);
+        $_POST["debitoPagamento"] = str_replace('.', '', $_POST["debitoPagamento"]);
+        $_POST["debitoPagamento"] = str_replace(',', '.', $_POST["debitoPagamento"]);
+        $_POST["creditoPagamento"] = str_replace('.', '', $_POST["creditoPagamento"]);
+        $_POST["creditoPagamento"] = str_replace(',', '.', $_POST["creditoPagamento"]);
+        $_POST["crediarioPagamento"] = str_replace('.', '', $_POST["crediarioPagamento"]);
+        $_POST["crediarioPagamento"] = str_replace(',', '.', $_POST["crediarioPagamento"]);
+        $_POST["pixPagamento"] = str_replace('.', '', $_POST["pixPagamento"]);
+        $_POST["pixPagamento"] = str_replace(',', '.', $_POST["pixPagamento"]);
+        $_POST["valorTotalFinalizar"] = str_replace('.', '', $_POST["valorTotalFinalizar"]);
+        $_POST["valorTotalFinalizar"] = str_replace(',', '.', $_POST["valorTotalFinalizar"]);
+        $_POST["descontoFinalizar"] = str_replace('.', '', $_POST["descontoFinalizar"]);
+        $_POST["descontoFinalizar"] = str_replace(',', '.', $_POST["descontoFinalizar"]);
+
         $valorPagamento = (float)$_POST["dinheiroPagamento"] + (float)$_POST["debitoPagamento"] + (float)$_POST["creditoPagamento"] + (float)$_POST["crediarioPagamento"] + (float)$_POST["pixPagamento"];
         $valorTotal = (float)$_POST["valorTotalFinalizar"] - (float)$_POST["descontoFinalizar"];
         if($valorPagamento < $valorTotal){
@@ -39,6 +54,7 @@ class Pedidos extends Controller
             }
             $venda = Vendas::create([
                 'cliente' => $_POST["clienteFinalizar"],
+                'orcamento' => 0,
                 'valorTotal' => (float)$_POST['valorTotalFinalizar'],
                 'desconto' => (float)$_POST["descontoFinalizar"],
                 'troco' => (float)$troco,

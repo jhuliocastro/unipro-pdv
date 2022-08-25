@@ -24,7 +24,7 @@ return new class extends Migration
             $table->float('dinheiro');
             $table->float('debito');
             $table->float('credito');
-            $table->float('creadiario');
+            $table->float('crediario');
             $table->float('pix');
             $table->timestamps();
         });

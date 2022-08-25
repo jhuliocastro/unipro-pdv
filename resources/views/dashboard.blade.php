@@ -535,7 +535,7 @@
             $.get("{{route('valorTotalCaixa.pedidos')}}", function(e){
                 $("#valorTotalCompra").text('R$ ' + e);
                 let valor = parseFloat(e) - parseFloat(desconto);
-                $("#valorTotalPagamento").text('R$ ' + valor.toFixed(2));
+                $("#valorTotalPagamento").text('R$ ' + e);
                 $("#valorTotalFinalizar").val(e);
                 $("#descontoFinalizar").val(desconto);
                 $("#descontoInfo").text('R$ ' + desconto);
