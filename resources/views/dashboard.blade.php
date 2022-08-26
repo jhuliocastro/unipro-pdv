@@ -2,6 +2,11 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
+            <div class="infoCabeca">
+                Operador: {{Auth::user()->name}}
+            </div>
+        </div>
+        <div class="row">
             <div class="col cabeca">
                 <span id="cabecalho">-</span>
             </div>
@@ -29,32 +34,35 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div id="caixaQuantidade">
-                            <span class="textoCaixa">Quantidade </span>
-                            <span class="valorCaixa" id="quantidadeInfo"></span><span> (F3)</span>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div id="caixaValorTotalCompra">
-                            <span class="textoCaixa">Valor Total da Compra </span>
-                            <span class="valorCaixa" id="valorTotalCompra">R$ {{$valorTotal}}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div id="caixaQuantidade">
                             <span class="textoCaixa">Desconto </span>
                             <span class="valorCaixa" id="descontoInfo"></span><span> (F2)</span>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div id="caixaFinalizarVenda">
-                            F5 - CANCELAR ITEM<br/>
-                            F6 - NOVA VENDA<br/>
-                            F7 - CONCLUIR VENDA
+                    <div class="col-md-4">
+                        <div id="caixaQuantidade">
+                            <span class="textoCaixa">Quantidade </span>
+                            <span class="valorCaixa" id="quantidadeInfo"></span><span> (F3)</span>
                         </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div id="caixaValorTotalCompra">
+                            <span class="textoCaixa" style="color: white;">Valor Total </span>
+                            <span class="valorCaixa" id="valorTotalCompra">R$ {{$valorTotal}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row rodape">
+                    <div class="col-md-6 opcoes">
+                        CANCELAR ITEM<br/>
+                        (F5)
+                    </div>
+                    <div class="col-md-6 opcoes">
+                        NOVA VENDA<br/>
+                        (F6)
+                    </div>
+                    <div class="col-md-6 opcoes">
+                        CONCLUIR VENDA<br/>
+                        (F7)
                     </div>
                 </div>
             </div>
