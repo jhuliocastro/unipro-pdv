@@ -6,6 +6,7 @@ use App\Models\Pedidos_Caixa;
 use App\Models\ProdutosModel;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Vendas;
@@ -64,7 +65,8 @@ class Pedidos extends Controller
                 'debito' => (float)$_POST["debitoPagamento"],
                 'credito' => (float)$_POST["creditoPagamento"],
                 'crediario' => (float)$_POST["crediarioPagamento"],
-                'pix' => (float)$_POST["pixPagamento"]
+                'pix' => (float)$_POST["pixPagamento"],
+                'user' => Auth::user()->id
             ]);
             if($venda->exists == true){
                 $produtos = Pedidos_Caixa::where('ip', env('APP_KEY'))->get();
@@ -80,17 +82,18 @@ class Pedidos extends Controller
                     $dadosProduto->save();
                 }
                 Pedidos_Caixa::where('ip', env('APP_KEY'))->delete();
-                PrintCupom::create([
+                /*PrintCupom::create([
                     'venda' => $venda->id,
                     'key' => env('APP_KEY')
-                ]);
-                Alert::success('Venda Concluída', 'Troco: R$ '.number_format($troco, 2, ',', '.'));
+                ]);*/
+                Cupom::gerarCupom($venda->id);
+                //Alert::success('Venda Concluída', 'Troco: R$ '.number_format($troco, 2, ',', '.'));
             }else{
                 Alert::error('Erro ao concluir venda!', 'Consulte o administrador do sistema.');
             }
         }
 
-        return view('dashboard', ["valorTotal" => Pedidos::valorTotalCaixa()]);
+        //return view('dashboard', ["valorTotal" => Pedidos::valorTotalCaixa()]);
     }
 
     public static function valorTotalCaixa(){
