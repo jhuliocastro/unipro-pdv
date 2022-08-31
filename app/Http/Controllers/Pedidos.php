@@ -87,13 +87,13 @@ class Pedidos extends Controller
                     'key' => env('APP_KEY')
                 ]);*/
                 Cupom::gerarCupom($venda->id);
-                //Alert::success('Venda Concluída', 'Troco: R$ '.number_format($troco, 2, ',', '.'));
+                Alert::success('Venda Concluída', 'Troco: R$ '.number_format($troco, 2, ',', '.'));
             }else{
                 Alert::error('Erro ao concluir venda!', 'Consulte o administrador do sistema.');
             }
         }
 
-        //return view('dashboard', ["valorTotal" => Pedidos::valorTotalCaixa()]);
+        return view('dashboard', ["valorTotal" => Pedidos::valorTotalCaixa()]);
     }
 
     public static function valorTotalCaixa(){
