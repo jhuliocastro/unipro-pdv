@@ -80,7 +80,7 @@
             <div class="row">
                 <div class="mb-3">
                     <label>Insira o nome do cliente</label>
-                    <input type="text" id="clientePesquisa" name="clientePesquisa" class="form-control">
+                    <input type="text" autocomplete="off" id="clientePesquisa" name="clientePesquisa" class="form-control">
                 </div>
             </div>
             <div class="row">
@@ -106,7 +106,7 @@
             <div class="row">
                 <div class="mb-3">
                     <label>Insira o nome do produto</label>
-                    <input type="text" id="produtoPesquisa" name="produtoPesquisa" class="form-control">
+                    <input type="text" autocomplete="off" id="produtoPesquisa" name="produtoPesquisa" class="form-control">
                 </div>
             </div>
             <div class="row">
@@ -135,7 +135,7 @@
                 <div class="col-md-12">
                     <label>Insira a quantidade desejada:</label>
                     <form method="post" action="#" id="formQuantidade">
-                        <input type="number" id="quantidadeProduto" name="quantidadeProduto" class="form-control">
+                        <input type="number" autocomplete="off" id="quantidadeProduto" name="quantidadeProduto" class="form-control">
                     </form>
                 </div>
             </div>
