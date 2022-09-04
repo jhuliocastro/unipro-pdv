@@ -26,6 +26,7 @@ return new class extends Migration
             $table->float('credito');
             $table->float('crediario');
             $table->float('pix');
+            $table->string('user');
             $table->timestamps();
         });
     }

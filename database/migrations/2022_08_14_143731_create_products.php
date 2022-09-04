@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('estoqueMinimo');
             $table->integer('estoqueAtual');
             $table->string('codigoBarras', 255);
+            $table->integer('idControle');
             $table->timestamps();
         });
     }
