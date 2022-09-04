@@ -543,10 +543,15 @@
             $.get("{{route('valorTotalCaixa.pedidos')}}", function(e){
                 $("#valorTotalCompra").text('R$ ' + e);
                 let valor = parseFloat(e) - parseFloat(desconto);
-                $("#valorTotalPagamento").text('R$ ' + e);
+
                 $("#valorTotalFinalizar").val(e);
                 $("#descontoFinalizar").val(desconto);
                 $("#descontoInfo").text('R$ ' + desconto);
+
+                let d1 = e.split('.').join('').split(',').join('.');
+                let d2 = desconto.toString().split('.').join('').split(',').join('.');
+                console.log(d1 - d2);
+                $("#valorTotalPagamento").text('R$ ' + (d1 - d2).toLocaleString('pt-BR', { minimumFractionDigits: 2}));
             });
         }
     </script>
