@@ -11,7 +11,7 @@ class Vendas extends Controller
 {
     public function home(){
         $data = date('Y-m-d').' 00:00:00';
-        $vendas = VendasModel::where('created_at', '>=', $data)->get();
+        $vendas = VendasModel::where('created_at', '>=', $data)->orderBy('id', 'DESC')->get();
         foreach($vendas as $venda){
             $dadosCliente = ClientesModel::find($venda->cliente);
             $venda->cliente = $dadosCliente->nome;
