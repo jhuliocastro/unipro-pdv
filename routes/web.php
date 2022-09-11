@@ -17,6 +17,7 @@ use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Produtos;
 use App\Http\Controllers\Pedidos;
 use App\Http\Controllers\Clientes;
+use App\Http\Controllers\Vendas;
 use App\Models\Pedidos_Caixa;
 
 Route::get('/', function () {
@@ -42,3 +43,6 @@ Route::post('/finalizarVenda', [Pedidos::class, 'finalizarVenda'])->middleware([
 Route::view('listagemProdutosCaixa', 'listagemProdutosCaixa', [
     'data' => DB::table('pedidos_caixa')->where('ip', env('APP_KEY'))->orderBy('id', 'desc')->get()
 ]);
+
+Route::get('/vendas', [Vendas::class, 'home'])->middleware(['auth'])->name('vendas.home');
+Route::post('/vendas/imprimir/cupom', [Vendas::class, 'imprimirCupom'])->middleware(['auth'])->name('vendas.imprimir');

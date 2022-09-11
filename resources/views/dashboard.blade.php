@@ -64,6 +64,10 @@
                         CONCLUIR VENDA<br/>
                         (F7)
                     </div>
+                    <div class="col-md-6 opcoes">
+                        VENDAS<br/>
+                        (F8)
+                    </div>
                 </div>
             </div>
             <div class="col cupomFiscal">
@@ -390,6 +394,9 @@
                     e.preventDefault();
                     dialogFinalizarVenda.dialog('open');
                     break;
+                case 119: //F8 VENDAS
+                    e.preventDefault();
+                    window.location.href = "{{route('vendas.home')}}";
             }
         }
 

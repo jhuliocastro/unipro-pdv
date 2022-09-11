@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ClientesModel;
 use App\Models\ProdutosModel;
-use App\Models\Vendas;
+use App\Models\VendasModel;
 use App\Models\Vendas_Produtos;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
@@ -12,7 +12,7 @@ use Dompdf\Dompdf;
 class Cupom extends Controller
 {
     public static function gerarCupom($id){
-        $dadosVenda = Vendas::find($id);
+        $dadosVenda = VendasModel::find($id);
         $dadosCliente = ClientesModel::find($dadosVenda->cliente);
         $produtosVenda = Vendas_Produtos::where('id_venda', $id)->get();
 

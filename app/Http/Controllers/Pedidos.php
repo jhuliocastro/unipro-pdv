@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Models\Vendas;
+use App\Models\VendasModel;
 use App\Models\Vendas_Produtos;
 use App\Models\PrintCupom;
 
@@ -54,7 +54,7 @@ class Pedidos extends Controller
             if($_POST["clienteFinalizar"] == null){
                 $_POST["clienteFinalizar"] = 1;
             }
-            $venda = Vendas::create([
+            $venda = VendasModel::create([
                 'cliente' => $_POST["clienteFinalizar"],
                 'orcamento' => 0,
                 'valorTotal' => (float)$_POST['valorTotalFinalizar'],
@@ -82,10 +82,10 @@ class Pedidos extends Controller
                     $dadosProduto->save();
                 }
                 Pedidos_Caixa::where('ip', env('APP_KEY'))->delete();
-                /*PrintCupom::create([
+                PrintCupom::create([
                     'venda' => $venda->id,
                     'key' => env('APP_KEY')
-                ]);*/
+                ]);
                 Cupom::gerarCupom($venda->id);
                 Alert::success('Venda Concluída', 'Troco: R$ '.number_format($troco, 2, ',', '.'));
             }else{
